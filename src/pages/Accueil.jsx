@@ -1,69 +1,43 @@
-// import { useEffect, useState } from "react";
-// import { getPopularMovies } from "../api";
-// import FilmCard from "../components/FilmCard";
-
-// export default function Accueil() {
-//   const [films, setFilms] = useState([]);
-
-//   useEffect(() => {
-//     const chargerFilms = async () => {
-//       const data = await getPopularMovies();
-//       setFilms(data);
-//     };
-
-//     chargerFilms();
-//   }, []);
-
-//   return (
-//     <div style={{ padding: "20px" }}>
-//       <h1>🎬 Films Populaires</h1>
-//       <div style={{
-//         display: "flex",
-//         flexWrap: "wrap",
-//         gap: "20px"
-//       }}>
-//         {films.map((film) => (
-//           <FilmCard key={film.id} film={film} />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-
-
-import { useEffect, useState } from "react";
-import { getPopularMovies } from "../api";
-import FilmCard from "../components/FilmCard";
+// ============================
+// 📂 src/pages/Accueil.jsx
+// ============================
+import { useEffect, useState } from 'react';
+import { getPopularMovies } from '../api';
+import FilmCard from '../components/FilmCard';
 
 export default function Accueil() {
   const [films, setFilms] = useState([]);
 
   useEffect(() => {
     const chargerFilms = async () => {
-      // 📡 1. جلب أفلام TMDb
+      /* 📡 1) récupérer les films populaires depuis TMDb */
       const filmsApi = await getPopularMovies();
 
-      // 💾 2. استرجاع الأفلام المضافة يدويًا من localStorage
-      const filmsLocaux = localStorage.getItem("films-ajoutes");
-      const filmsAjoutes = filmsLocaux ? JSON.parse(filmsLocaux) : [];
+      /* 💾 2) récupérer les films ajoutés manuellement */
+      const filmsLocaux = JSON.parse(
+        localStorage.getItem('films-ajoutes') || '[]'
+      );
 
-      // 🔀 3. دمج القائمتين: المضافة أولاً ثم الشهيرة
-      const tousLesFilms = [...filmsAjoutes, ...filmsApi];
-
-      setFilms(tousLesFilms);
+      /* 🔀 3) fusion : mettre les films locaux en tête de liste */
+      setFilms([...filmsLocaux, ...filmsApi]);
     };
 
     chargerFilms();
   }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">🎬 Films Populaires et Ajoutés</h1>
-      <div className="flex flex-wrap gap-6">
+    <main className="max-w-7xl mx-auto px-4 py-10 space-y-12">
+      {/* 🏷️ titre principal */}
+      <h1 className="text-3xl md:text-4xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
+        Films populaires&nbsp;&amp;&nbsp;ajoutés
+      </h1>
+
+      {/* 🎞️ grille des films */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {films.map((film) => (
           <FilmCard key={film.id} film={film} />
         ))}
       </div>
-    </div>
+    </main>
   );
 }
