@@ -74,7 +74,7 @@ export default function Ajouter() {
       {/* 🏷️ titre */}
       <div className="md:w-[700px] w-[350px] mx-auto text-center">
         <h1 className="text-3xl flex items-center justify-center gap-3 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500 font-bold mb-8">
-          <PlusCircle className="w-8 h-8 text-green-600" />
+          {/* <PlusCircle className="w-8 h-8 text-green-600" /> */}
           Ajouter&nbsp;un&nbsp;nouveau&nbsp;film
         </h1>
       </div>
